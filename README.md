@@ -4,4 +4,4 @@
 ---
 
 ## Security
-- [암호와 해킹](./Cipher/)
+- [Cipher](./Cipher/)
