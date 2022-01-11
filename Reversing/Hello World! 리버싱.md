@@ -265,5 +265,102 @@ MessageBoxW 함수의 전달인자 4092A0의 문자열("Hello World!") 버퍼를
 유니코드의 문자열은 2바이트 크기의 NULL로 끝나야 한다는 것을 주의해야합니다. 
 유니코드 항목에서는 NULL을 입력할 수 없기 때문에 밑의 **Hex** 항목에서 ```2바이트 크기의 NULL(00 00)```을 입력합니다.
 
+다시 main() 함수를 보면 명령어와 파라미터의 주소는 그대로이지만 MessageBoxW() 함수에 전달되는 파라미터의 내용(문자열) 자체가 변경되었습니다.
+
+<img width="618" alt="parameter" src="https://user-images.githubusercontent.com/66156026/148880896-8bac38e5-a75c-42e4-8dd7-4fbe968fa9c1.png">
+
+[F9] 키를 눌러 실행시켜보면 메시지 박스에 패치된 문자열이 확인됩니다. 이런 문자열 버퍼 내용을 직접 수정하는 방법의 **장점**은 사용하기에 가장 간단하다는 것입니다.
+**단점**은 기존 문자열 버퍼 크기 이상의 문자를 입력하기 어렵다는 제약 조건입니다.
+
+> 일반적으로 실행 파일에서 사용되는 문자열들은 실제 크기보다 조금 여유 있게 저장되어 있습니다. 운이 좋다면 문자열 뒤쪽에 있는 버퍼를 조금 침범하더라도 프로그램 실행에 문제가 없는 경우도 있습니다. 하지만 권장하는 방법은 아니며 이런 불안 요소들이 계속 쌓이면 전체 시스템의 안정성이 떨어집니다.
+
+위에서 수행한 패치 작업은 메모리에 임시적으로 한 것이라서 디버거가 종료되면 패치했던 내용은 사라집니다. 그렇기 때문에 변경한 내용을 영구히 보존하려면 별도의 실행 파일로 저장해야 합니다.
+dump 창에서 변경된 내용("Hello Reversing" 문자열)을 선택하여 ```마우스 우측 버튼 - Copy to executable file 메뉴```를 선택하면 Hex 창이 나타납니다.
+
+여기서 다시 ```마우스 우측 버튼 - Save file 메뉴```를 선택하여 파일 이름을 지정하고 저장하면 완료됩니다.
+
+<br/>
+
+```2) 다른 메모리 영역에 새로운 문자열을 생성```
+
+만약 원본 문자열보다 더 긴 문자열("Hello Reversing World!")로 패치해야 한다면 문자열 버퍼를 직접 수정하는 방법은 잘 맞지 않습니다.
+
+디버거를 재실행([Ctrl+F2])하고 main() 함수 401000으로 이동합니다.
+
+<img width="596" alt="401007" src="https://user-images.githubusercontent.com/66156026/148884506-6307a19f-1d53-404d-84be-816e584227cf.png">
+
+401007 주소의 PUSH 4092A0 명령은 (MessageBoxW() 함수 호출을 위해서) 4092A0 주소의 "Hello World!" 문자열을 파라미터로 전달하고 있습니다.
+
+MessageBoxW() 함수는 파라미터로 입력된 주소의 문자열을 출력해주기 때문에, 만약 이 문자열 주소를 변경해서 전달하면 메시지 박스에는 변경된 문자열이 출력될 것입니다.
+즉 적당한 메모리 영역에 패치하고자 하는 긴 문자열을 적어놓고 MessageBoxW() 함수에게 그 주소를 파라미터로 넘겨주는 것입니다. **전혀 다른 문자열 주소를 넘겨준다**고 말할 수 있습니다.
+
+> 여기서 고려해야 할 점은 '메모리 어느 영역에 문자열을 써야 하는지' 입니다. 이 것은 실행 파일 형식(PE File Format)과 가상 메모리(Virtual Address) 구조를 알고 있어야 합니다. 이번에는 임의로 적절한 영역을 선택합니다.
+
+위의 방법 1)에서 수정한 문자열 주소는 4092A0입니다. 이 부분을 다시 **dump 창**으로 열어 스크롤을 밑으로 내리다 보면 해당 메모리 영역이 ```NULL padding``` 영역으로 끝나는 것을 볼 수 있습니다. 이곳은 프로그램에서 사용되지 않는 NULL padding 영역입니다.
+
+<img width="595" alt="null padding" src="https://user-images.githubusercontent.com/66156026/148885183-27c17411-c9e0-4811-bc30-3e77ff376231.png">
+
+> 프로그램이 메모리에 로딩될 때 최소 기본 단위(보통 1000)가 있습니다. 비록 프로그램 내에서는 메모리를 100 크기만큼만 사용한다고 해도 실제로 메모리에 로딩될 때는 최소 기본 단위인 1000만큼의 크기가 잡히는 것입니다. 나머지 크기의 사용되지 않는 영역은 그냥 NULL로 채워집니다.
+
+NULL padding 영역을 문자열 버퍼로 사용하여 MessageBoxW 함수에 넘겨주면 될 것 같습니다. 적당한 위치(409F50)에 패치 문자열("Hello Reversing World!!!")를 써줍니다.
+
+<img width="595" alt="409F50" src="https://user-images.githubusercontent.com/66156026/148885611-8e862ae8-a38b-4446-b03d-3782096f1533.png">
+
+버퍼를 새로 구성하였습니다. 이제 MessageBoxW() 함수에게 새로운 버퍼 주소(409F50)를 파라미터로 전달해야 합니다.
+그러기 위해서는 코드를 수정해야 하는데, **Code 창**에서 Assemble 명령을 사용해서 코드를 수정하겠습니다.
+커서를 401007 주소 위치에 넣고 Assemble 명령(단축키 [Space])을 주면 Assemble 창이 나타납니다.
+
+<img width="643" alt="assemble" src="https://user-images.githubusercontent.com/66156026/148886016-68c9ae75-a45c-4dca-8481-be323b7a8f6e.png">
+
+Assemble 창에 **'PUSH 409F50'** 명령어를 입력하고 실행[F9]하면 패치된 문자열로 결과가 나타납니다. 긴 문자열을 패치하는 방법입니다.
+
+> Assemble 창에서는 사용자가 원하는 어셈블리 명령어를 입력할 수 있습니다. 입력하는 즉시 코드에 반영되며 실행도 가능합니다. 디버깅의 강력한 기능 중의 하나가 실행 중인 프로세스의 코드는 동적으로 패치할 수 있다는 점입니다.
+
+그러나 **위의 수정된 코드를 파일로 만들면 제대로 동작하지 않을 것입니다.** 409F50 메모리 주소 때문입니다. 실행 파일이 메모리에 로딩되어 프로세스로 실행될 때 파일이 그대로 메모리로 로딩되는 것이 아니라, 어떤 규칙에 의해서 올라가게 됩니다.
+그 과정에서 프로세스 메모리가 존재하는데, 그에 해당하는 파일 옵셋(offset)이 존재하지 않는 경우가 많습니다. 이번 경우도 메모리 409F50에 대응하는 파일 offset이 존재하지 않습니다. 이를 정확히 이해하기 위해서는 ```PE File Format```을 알아야 합니다.
+
+## 정리
+### Olldbg 기초 사용법
+<table>
+<tr><th>명령어</th><th>단축키</th><th>설명</th></tr>
+<tr><td>Step Into</td><td>F7</td><td>CALL 명령을 만나면 그 함수 코드 내부로 따라 들어감</td></tr>
+<tr><td>Step Over</td><td>F8</td><td>CALL 명령을 만나면 따라 들어가지 않고 그냥 함수 자체를 실행함</td></tr>
+<tr><td>Restart</td><td>Ctrl+F2</td><td>다시 처음부터 디버깅 시작</td></tr>
+<tr><td>Go to</td><td>Ctrl+G</td><td>원하는 주소를 찾아감</td></tr>
+<tr><td>Run</td><td>F9</td><td>실행(BP가 걸려있으면 그 곳에서 실행이 정지됨)</td></tr>
+<tr><td>Execute till return</td><td>Ctrl+F9</td><td>함수 코드 내에서 RETN 명령어까지 실행</td></tr>
+<tr><td>Execute till cursor</td><td>F4</td><td>cursor 위치까지 실행함</td></tr>
+<tr><td>Comment</td><td>;</td><td>Comment 추가</td></tr>
+<tr><td>User-defined comment</td><td>마우스 메뉴 Search for-User-defined comment</td><td>사용자가 입력한 comment 목록 보기</td></tr>
+<tr><td>Label</td><td>:</td><td>Label 추가</td></tr>
+<tr><td>User-defined label</td><td>마우스 메뉴 Search for-User-defined label</td><td>사용자가 입력한 Label 목록 보기</td></tr>
+<tr><td>Breakpoint</td><td>F2</td><td>BP(BreakPoint) 설정/해제</td></tr>
+<tr><td>All referenced text strings</td><td>마우스 메뉴 Search for-All referenced text strings</td><td>코드에서 참조되는 문자열 보기</td></tr>
+<tr><td>All intermodular calls</td><td>마우스 메뉴 Search for-All intermodular calls</td><td>코드에서 호출되는 모든 API 함수 보기</td></tr>
+<tr><td>Edit data</td><td>Ctrl+E</td><td>데이터 편집</td></tr>
+<tr><td>Assemble</td><td>Space</td><td>어셈블리 코드 작성</td></tr>
+<tr><td>Copy to executable file</td><td>마우스 메뉴 Copy to executable file</td><td>파일의 복사본 생성(변경 사항 반영됨)</td></tr>
+</table>
+
+### Assembly 기초 명령어
+<table>
+<tr><th>명령어</th><th>설명</th></tr>
+<tr><td>CALL XXXX</td><td>XXXX 주소의 함수를 호출</td></tr>
+<tr><td>JMP XXXX</td><td>XXXX 주소로 점프</td></tr>
+<tr><td>PUSH XXXX</td><td>스택에 XXXX 저장</td></tr>
+<tr><td>RETN</td><td>스택에 저장된 복귀 주소로 점프</td></tr>
+</table>
+
+### 프로세스 data/code 패치 방법
+Ollydbg의 'Edit data'와 'Assemble' 기능 이용
+
+**용어**
+<table>
+<tr><th>용어</th><th>설명</th></tr>
+<tr><td>VA(Virtual Address)</td><td>프로세스의 가상 메모리</td></tr>
+<tr><td>OP code(OPeration code)</td><td>CPU 명령어(바이트 code)</td></tr>
+<tr><td>PE(Portable Executable)</td><td>Windows 실행 파일(exe, dll, sys 등)</td></tr>
+</table>
+
 
 
