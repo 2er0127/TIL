@@ -1,18 +1,18 @@
-# TIL (Today I Learned)
+# 🌸 TIL (Today I Learned)
 > Today I Learned.  
-> **보안 전문가**
----
+> **악성코드 분석 전문가**
 
-## Security
+
+## 📌 Security
 - [악성 코드](./malicious%20code/)
 - [Cipher](./Cipher/)
 - [Reversing](./Reversing/)
 
-## C/C++
+## 📌 C/C++
 - [자료구조/알고리즘](./Algorithm/)
 
-## 시스템
+## 📌 시스템
 - [Windows](./Windows/)
 
-## Assembly
+## 📌 Assembly
 - [어셈블리어](./Assembly/)
