@@ -86,4 +86,28 @@ FS 레지스터는 애플리케이션 디버깅에도 자주 등장하는데 SEH
 
 - EFLAGS : Flag Register
 
+플래그(Flag) 레지스터의 이름은 EFLAGS이며 32비트(4바이트) 크기입니다. (16비트의 FLAGS 레지스터의 32비트 확장 형태입니다.)
+EFLAGS 레지스터는 각각의 비트마다 의미를 가지고 있습니다.
 
+![eflags](https://user-images.githubusercontent.com/66156026/149780121-78994144-508f-4bad-ad0d-b29493f94b47.jpeg)
+
+**각 비트의 1 or 0의 값은 On/Off 또는 True/False 를 의미**합니다. 일부 비트는 시스템에서 직접 세팅하고, 일부 비트는 프로그램에서 사용된 명령의 수행 결과에 따라 세팅됩니다.
+
+> Flag는 깃발이 올라가면 1(On/True), 깃발이 내려가면 0(Off/False)으로 이해할 수 있습니다.
+
+EFLAGS 레지스터의 32개의 각 비트 의미를 전부 이해하는 것은 매우 어렵기 때문에 리버싱 입문 단계에서는 애플리케이션 디버깅에 필요한 **3가지 Flag(ZF, OF, CF)** 에 대해서 우선 이해합니다.
+특히 이 3개의 플래그가 중요한 이유는 조건 분기 명령어(Jcc)에서 이들 Flag의 값을 확인하고 그에 따라 동작 수행 여부를 결정하기 때문입니다.
+
+- Zero Flag(ZF) : 연산 명령 후에 결과 값이 0이 되면 ZP가 1(True)로 세팅됩니다.
+- Overflow Flag(OF) : 부호 있는 수(signed interger)의 오버플로가 발생했을 때 1로 세팅됩니다. 그리고 MSB(Most Significant Bit)가 변경되었을 때 1로 세팅됩니다.
+- Carry Flag(CF) : 부호 없는 수 (unsigned integer)의 오버플로가 발생했을 때 1로 세팅됩니다.
+
+```4) Instruction Pointer```
+
+- EIP : Instruction Pointer
+
+Instruction Pointer는 **CPU가 처리할 명령어의 주소를 나타내는 레지스터**이며, 크기는 32비트(4바이트)입니다.(16비트의 IP 레지스터의 확장 형태입니다.)
+CPU는 EIP에 저장된 메모리 주소의 명령어(instruction)를 하나 처리하고 난 후 자동으로 그 명령어 길이만큼 EIP를 증가시킵니다.
+
+범용 레지스터들과는 다르게 EIP는 그 값을 직접 변경할 수 없기 때문에 다른 명령어를 통해 간접적으로 변경해야 합니다.
+EIP를 변경하고 싶다면 특정 명령어(JMP, Jcc, CALL, RET)를 사용하거나 인터럽트(interrupt), 예외(exception)를 발생시켜야 합니다.
