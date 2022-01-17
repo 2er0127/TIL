@@ -20,4 +20,5 @@
 - [Hello World! 리버싱](./Hello%20World!%20리버싱.md)
 - [리틀 엔디언 표기법](./리틀%20엔디언%20표기법.md)
 - [IA-32 Register 기본 설명](./IA-32%20Register%20기본%20설명.md)
+- [스택](./스택.md)
 
