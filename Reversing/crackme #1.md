@@ -128,7 +128,7 @@ GetDriveType() API로 C 드라이브의 타입을 얻어오는데(대부분 HDD 
 MessageBox(NULL, "Make me think your HD is a CD-Rom.", "abex' 1st crackme", MB_OK|MB_APPLMODAL);
 ```
 
-실제 **C 언어 소스코드에서 함수에 넘기는 파라미터의 순서가 어셈블리 언어에서는 ```역순```**으로 넘어갑니다.
+실제 **C 언어 소스코드에서 함수에 넘기는 파라미터의 순서가 어셈블리 언어에서는** ```역순```으로 넘어갑니다.
 
 **스택은 FILO(First In Last Out) 구조이기 때문에 역순으로 입력**합니다.
 FILO 구조이기 때문에 파라미터를 역순으로 넣어주면 받는 쪽(MessageBoxA 함수 내부)에서 올바른 순서로 꺼낼 수 있습니다.
