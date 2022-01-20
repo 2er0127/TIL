@@ -17,7 +17,7 @@
 
 ```본 문에서는 32bit OS를 이용하여 OllyDbg 프로그램을 사용하였지만, 64bit OS에서는 실행이 되지 않기 때문에 x32dbg 프로그램에 예제 파일을 사용하여 실습합니다.```
 
-![HelloWorld.exe 디버거 오픈](./Image/helloworldexe.png)
+<img width="885" alt="helloworldexe" src="https://user-images.githubusercontent.com/66156026/150313560-fa51e5b4-7144-4873-a1b3-285b066d4e8e.png">
 
 - 리버서들은 일반적으로 파일을 분석할 때 소스코드가 없이 실행 파일만 가지고 분석을 하기 때문에 전문 디버거를 사용합니다.
 
@@ -36,7 +36,7 @@
 - 디버거가 멈춘 곳은 EP(EntryPoint) 코드로, HelloWorld.exe의 실행 시작 주소(4011A0)입니다.
 - EP 코드에 눈에 띄는 것은 CALL 명령과 JMP 명령입니다.
 
-![EPCode](./Image/EPCode.png)
+<img width="457" alt="EPCode" src="https://user-images.githubusercontent.com/66156026/150313716-e6c1512b-76a4-4aae-b283-997e7eb4c30a.png">
 
 <table>
 <tr><th>Address</th><th>Instruction</th><th>Disassembled code</th><th>comment</th></tr>
@@ -66,7 +66,7 @@
 
 - EP 코드의 4011A0 주소에서 ```Step Into[F7]``` 명령어를 이용해 40270C 함수 안으로 따라갈 수 있습니다.
 
-![40270C](./Image/40270C따라가기.png)
+<img width="551" alt="40270C따라가기" src="https://user-images.githubusercontent.com/66156026/150313810-aa6fd2c7-0428-4815-9ec4-62f4719226b7.png">
 
 - Code Window의 가장 오른쪽 부분은 주석(Comment)입니다. 그 중 빨간색 글씨로 된 부분은 코드에서 호출되는 API 함수 이름인데, **원본 소스코드에서 사용된적 없는 API들이 호출되고 있기 때문에 main() 함수가 아닌 것을 알 수 있습니다.**
 - 이는 프로그램 실행을 위해서 자동으로 추가되는 Stub Code입니다.
@@ -77,12 +77,12 @@
 - RET은 함수 끝에서 사용되며 이 함수가 호출된 원래 주소 쪽으로 되돌아갑니다.
 - RET 명령어까지 한 번에 가는 단축키는 ```Execute till Return[Ctrl+F9]``` 입니다.
 
-![4027A1ret](./Image/4027A1ret.png)
+<img width="454" alt="4027A1ret" src="https://user-images.githubusercontent.com/66156026/150314156-33a8963a-67d3-4ecf-85e2-ba0f7d0a45a3.png">
 
 ### 40104F 점프문 따라가기
 - 4011A5 주소의 JMP 0040104F 명령을 실행하여 40104F 주소로 갑니다.
 
-![40104F코드일부](./Image/40104F주소일부.png)
+<img width="454" alt="40104F주소일부" src="https://user-images.githubusercontent.com/66156026/150314041-4be3ca04-a31e-4a0f-9751-5dd742824587.png">
 
 - 컴파일러의 Stub Code가 나오는데, 이 코드를 따라가다보면 main() 함수를 찾을 수 있습니다.
 - Visual C++로 제작된 실행 파일들은 이런 형식으로 되어 있습니다. **Stub Code는 개발 도구에 따라 달라지기 때문에** 많이 접해보는 것이 좋습니다. 
@@ -90,7 +90,8 @@
 ### main() 함수 찾기
 - 40104F 주소부터 함수 호출 명령어를 따라가다보면 main() 함수를 만날 수 있습니다.
 
-![](./Image/call%20402524.png)
+<img width="454" alt="call 402524" src="https://user-images.githubusercontent.com/66156026/150314237-efc53fa8-ad17-4292-a6f3-fb9355b6a7ba.png">
+
 [F7] 명령으로 한 줄씩 내려오다보면 401056 주소의 CALL 402524 함수 호출 명령어를 만납니다.
 마찬가지로 [F7] 명령을 통해 함수 내부로 들어가봅니다.
 
@@ -102,8 +103,8 @@
 디버깅을 하며 내려가다보면 401144 주소의 CALL 401000 명령어를 확인할 수 있습니다. [F7] 명령으로 함수 내부로 들어갑니다. 
 ```MessageBoxW() API를 호출하는 코드```와 함께 API의 파라미터인 ```"www.reversecore.com"과 "Hello World!"``` 문자열이 확인됩니다.
 
-![](./Image/MessageBoxW().png)
-![](./Image/MessageBox%20API.png)
+<img width="454" alt="MessageBoxW()" src="https://user-images.githubusercontent.com/66156026/150314324-e54b40f6-2f6d-4d28-a220-ede70db24653.png">
+<img width="454" alt="MessageBox API" src="https://user-images.githubusercontent.com/66156026/150314329-6236cdf1-9f57-4248-a2cf-d4d2f6d8a688.png">
 
 이 코드와 문자열은 HelloWorld.cpp의 소스코드 내용과 일치하기 때문에 **401000 함수가 main() 함수**입니다.
 
@@ -132,7 +133,7 @@
 
 Go to 다이얼로그에 주소를 입력해두면 ```Go to(Ctrl+G)``` 명령으로 이동할 수 있습니다.
 
-![](./Image/go%20to.png)
+<img width="291" alt="go to" src="https://user-images.githubusercontent.com/66156026/150314415-9d658d3e-c971-440c-94eb-eb2db629e325.png">
 
 ```Execute till cursor[F4] 명령```으로 해당 커서가 놓인 주소까지 실행하고 40104F 주소부터 편하게 디버깅을 진행합니다. **(공통)**
 
@@ -147,14 +148,14 @@ Go to 다이얼로그에 주소를 입력해두면 ```Go to(Ctrl+G)``` 명령으
 프로그래밍에서와 마찬가지로 디버깅에서도 주석은 매우 중요합니다. [;] 단축키로 주석(Comment)을 달고, 아무 주소에서 마우스 우측 메뉴 Search for - User - defined comment 항목을 선택하면 사용자가 입력한 주석이 표시됩니다.
 해당 주석을 더블 클릭하면 그 주소로 이동할 수 있습니다.
 
-![](./Image/comment.png)
+<img width="560" alt="comment" src="https://user-images.githubusercontent.com/66156026/150314462-a4a88224-5c3c-415a-a1d6-86ede1de3299.png">
 
 **4) 레이블**
 
 레이블(Label)은 원하는 주소에 특정 이름을 붙여주는 유용한 기능입니다.
 원하는 주소에 커서를 위치하여 단축키 [:]를 이용해 레이블을 입력하면 주소를 해당 레이블로 표시합니다. 마찬가지로 원하는 레이블을 더블 클릭하면 해당 주소로 이동합니다.
 
-![](./Image/label.png)
+<img width="559" alt="label" src="https://user-images.githubusercontent.com/66156026/150314521-07c55895-0d30-4f4f-b5fd-2b050545449a.png">
 
 ## 원하는 코드를 빨리 찾아내는 4가지 방법
 디버깅을 수행하다보면 알 수 있듯이 실행 파일의 EP 주소에 바로 main() 함수가 나타나는 것이 아니고 사용한 개발 도구의 Stub Code가 나타납니다. 찾고자하는 main() 함수는 EP 코드로부터 한참 떨어져 있습니다.
@@ -174,7 +175,7 @@ Win32 응용 프로그램에서는 API 함수의 파라미터를 스택을 이�
 Olldbg는 디버깅할 프로그램을 처음 로딩할 때 사전 분석 과정을 거칩니다. 프로세스 메모리르르 쭉 훑어서 참조되는 문자열과 호출되는 API들을 뽑아내서 따로 목록으로 정리를 해놓습니다.
 ```All referenced text strings``` 명령을 사용하면 프로그램 코드에서 참조되는 문자열들을 보여줍니다.
 
-![](./Image/all%20referenced.png)
+<img width="558" alt="all referenced" src="https://user-images.githubusercontent.com/66156026/150314682-51567a40-8955-4f6c-883d-2f925bdf042b.png">
 
 문자열 Hell World!나 www,reversecore,com 을 더블 클릭하면 main() 함수의 MessageBoxW() 호출 코드로 바로 이동할 수 있습니다.
 
