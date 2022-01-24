@@ -11,3 +11,4 @@
 - [스택](./스택.md)
 - [abex' crackme #1 분석](./crackme%20%231.md)
 - [스택 프레임](./스택%20프레임.md)
+- [abex' crackme #2 분석](./crackme%20%232.md)
