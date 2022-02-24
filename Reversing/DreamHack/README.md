@@ -7,3 +7,4 @@
 ## 목차
 - [Binary](./binary.md)
 - [Static Dynamic Analysis](./Static%20Dynamic%20Analysis.md)
+- [Computer Architecture](./Computer%20Architecture.md)
