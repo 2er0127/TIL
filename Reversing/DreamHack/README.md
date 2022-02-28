@@ -8,3 +8,4 @@
 - [Binary](./binary.md)
 - [Static Dynamic Analysis](./Static%20Dynamic%20Analysis.md)
 - [Computer Architecture](./Computer%20Architecture.md)
+- [Windows Memory Layout](./Windows%20Memory%20Layout.md)
