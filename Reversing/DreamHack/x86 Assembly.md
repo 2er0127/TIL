@@ -50,3 +50,62 @@ x64 어셈블리 언어의 문장은 동사에 해당하는 **명령어(Operatio
 <tr><th>lea rsi, [rbx+8*rcx]</th><td>rbx+8*rcx를 rsi에 저장</td></tr>
 </table>
 
+### 산술 연산 명령어
+산술 연산(Arithmetic) 명령어에는 ```inc``` ```dec``` ```add``` ```sub``` 가 존재합니다.
+
+산술 연산 명령어는 **덧셈, 뺄셈, 곱셈, 나눗셈 연산**을 지시합니다.
+
+```add dst, src``` : dst에 src의 값을 더합니다.
+<table>
+<tr><th>add eax, 3</th><td>eax += 3</td></tr>
+<tr><th>add ax, WORD PTR[rdi]</th><td>ax += *(WORD *)rdi</td></tr>
+</table>
+
+```sub dst, src``` : dst에서 src의 값을 뺍니다.
+<table>
+<tr><th>sub eax, 3</th><td>eax -= 3</td></tr>
+<tr><th>sub ax, WORD PTR[rdi]</th><td>ax -= *(WORD *)rdi</td></tr>
+</table>
+
+```inc op``` : op의 값을 1 증가
+<table>
+<tr><th>inc eax</th><td>eax += 1</td></tr>
+</table>
+
+```dec op``` : op의 값을 1 감소
+<table>
+<tr><th>dec eax</th><td>eax -= 1</td></tr>
+</table>
+
+**산술 연산 문제 풀이 추가하기**
+
+### 논리 연산 - and & or
+논리 연산 명령어는 ```add``` ```or``` ```xor``` ```neg``` 등의 **비트 연산**을 지시합니다. 연산은 비트 단위로 이루어집니다.
+
+```add dst, src``` : dst와 src의 비트가 모두 1이면 1, 아니면 0
+```assembly
+[Register]
+eax = 0xffff0000
+ebx = 0xcafebabe
+
+[Code]
+and eax, ebx
+
+[Result]
+eax = 0xcafe0000
+```
+
+```or dst, src``` : dst와 src의 비트 중 하나라도 1이면 1, 아니면 0
+```assembly
+[Register]
+eax = 0xffff0000
+ebx = 0xcafebabe
+
+[Code]
+or eax, ebx
+
+[Result]
+eax = 0xffffbabe
+```
+
+
