@@ -108,4 +108,30 @@ or eax, ebx
 eax = 0xffffbabe
 ```
 
+### 논리 연산 - xor & not
+```xor dst, src``` : dst와 src의 비트가 서로 다르면 1, 같으면 0
+```assembly
+[Register]
+eax = 0xffff0000
+ebx = 0xcafebabe
+
+[Code]
+xor eax, ebx
+
+[Result]
+eax = 0x35014541
+```
+> xor 연산을 **동일한 값으로 두 번** 실행하면 원래의 값으로 돌아갑니다.
+
+```not op``` : op의 비트 전부 반전
+```assembly
+[Register]
+eax = 0xffffffff
+
+[Code]
+not eax
+
+[Result]
+eax = 0x00000000
+```
 
