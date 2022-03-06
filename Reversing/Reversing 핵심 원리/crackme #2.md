@@ -97,5 +97,12 @@ ThunRTMain() 코드의 시작 부분입니다. 이 주소는 MSVBVM60.dll 모듈
 
 <img width="656" alt="2" src="https://user-images.githubusercontent.com/66156026/150744915-2db74c68-d12b-43c2-998c-6d86419c6f4d.png">
 
+403329 주소의 __vbaVarTstEq() 함수를 호출해서 리턴 값(AX)을 비교(TEST)한 후 403332 주소의 조건 분기(JE 명령)에 의해서 참인지 거짓인 코드인지 분기하게 됩니다.
+
+> **어셈블리 명령어**
+> - **TEST** : 논리 비교(Logical Compare)
+> 'AND' 연산과 동일. 두 오퍼랜드 중 하나가 0이면 AND 연산 결과는 0 -> ZF = 1로 세팅된다.
+> - **JE** : 조건 분기(Jump if equal) : ZF = 1이면 점프한다.
+
 
 
