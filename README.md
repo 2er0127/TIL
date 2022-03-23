@@ -1,6 +1,5 @@
 # 🌸 TIL (Today I Learned)
-> Today I Learned.  
-> **악성코드 분석 전문가**
+> *Today I Learned.*
 
 ## 💎 Reversing
 - [리버싱 핵심 원리](./Reversing/Reversing%20핵심%20원리/)
@@ -10,6 +9,7 @@
 ## 📌 Security
 - [악성 코드](./malicious%20code/)
 - [Cipher](./Cipher/)
+- [Packet analysis](https://github.com/princesssuna/attack-packet-analysis)
 
 ## 📌 C/C++
 - [자료구조/알고리즘](./Algorithm/)
