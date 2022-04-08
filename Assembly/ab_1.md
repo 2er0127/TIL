@@ -1,0 +1,18 @@
+```assembly
+MAIN SEGMENT
+    ASSUME CS : MAIN
+
+	MOV DL, 41H
+	MOV AH, 2
+	INT 21H
+	MOV DL, ‘B’
+	MOV BL, 2
+	MOV AH, BL
+	INT 21H
+
+	MOV AH, 4CH
+	INT 21H
+
+MAIN ENDS
+END
+```
