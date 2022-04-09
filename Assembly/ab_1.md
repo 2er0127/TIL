@@ -16,3 +16,46 @@ MAIN SEGMENT
 MAIN ENDS
 END
 ```
+
+```assembly
+MAIN SEGMENT
+    ASSUME CS : MAIN
+
+	CHAR1 EQU ‘A’
+	CHAR2 = 42H
+	DISP EQU 2
+
+	MOV DL, CHAR1
+	MOV AH, DISP
+    INT 21H
+    MOV DL, CHAR2
+    MOV AH, DISP
+    INT 21H
+
+    MOV AH, 4CH
+    INT 21H
+
+MAIN ENDS
+END
+```
+
+```assembly
+MAIN SEGMENT
+	ASSUME CS : MAIN
+
+    MOV BX, 4040H
+    ADD BX, 0102H
+    MOV DL, BH ; 상위 바이트 ‘A’
+    MOV AH, 2
+    INT 21H
+
+    MOV DL, BL ; 하위 바이트 ‘B’
+    MOV AH, 2
+    INT 21H
+
+    MOV AH, 4CH
+    INT 21H
+
+MAIN ENDS
+END
+```
