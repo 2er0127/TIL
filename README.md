@@ -1,6 +1,8 @@
 # 🌸 TIL (Today I Learned)
 > *Today I Learned.*
 
+## 💎 NETWORK
+- [dummy interface-dhcp](./network/dummy%20interface-dhcp.md)
 ## 💎 Reversing
 - [리버싱 핵심 원리](./Reversing/Reversing%20핵심%20원리/)
 - [리버싱 이 정도는 알아야지](./Reversing/리버싱%20이%20정도는%20알아야지/)
