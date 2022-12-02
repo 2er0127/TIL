@@ -31,7 +31,7 @@
 ...<br/>
 ```Option (255) End```: 끝을 의미
 
-
+<br/>
 
 ## 📌 USE dummy interface
 디버깅 및 테스트 목적으로 dummy network interface를 만들어 사용할 수 있다.
@@ -50,4 +50,33 @@ sudo dhclient -i dum0
 
 // del
 sudo ip link del dum0
+```
+
+### 🔹 Linux dummy-network interface
+- 네트워크 IP 주소 구성에 DHCP(Dynamic Host Configuration Protocol)를 사용하는 경우 Adaptive Server 구성 요소를 설치한다.
+
+**dummy-network interface install**
+
+```
+// $PATH 환경 설정에 /sbin 추가
+# PATH=$PATH:/sbin
+
+// 인터넷 주소가 10.0.0.1일 경우
+# echo 10.0.0.1 $HOSTNAME >> /etc/hosts
+# cat /etc/hosts
+
+// dummy network driver load
+# modprobe dummy
+# ip link add dum0 type dummy
+
+// dummy network driver를 $HOSTNAME 구성 IP 주소에 binding
+# ifconfig dum0 $HOSTNAME
+
+// DHCP 환경의 경우 설정된 가상 네트워크 설정에 "default" 이외의 경로를 추가해야함
+# route add $HOSTNAME dum0
+
+# ifconfig dum0
+
+// set routing show
+# route
 ```
