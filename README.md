@@ -16,7 +16,7 @@
 - [Packet analysis](https://github.com/1ueur/attack-packet-analysis)
 
 ### 🧸 OWASP
-- [OWASP Top 10 2023](./OWASP/)
+- [OWASP Top 10 2023](./OWASP/OWASP%20Top%2010%202023.md)
 
 ## 📌 Assembly
 - [어셈블리어](./Assembly/)
